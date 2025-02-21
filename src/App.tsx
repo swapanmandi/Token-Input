@@ -63,6 +63,26 @@ function App() {
     setTokens([]);
   };
 
+  const handlePasteTokens = () => {
+    navigator.clipboard.readText().then((text) => {
+      const pastedTokens = text
+        .split(",")
+        .filter((token) => token.trim() != "");
+      console.log(pastedTokens);
+      const uniquePastedTokens = pastedTokens.filter(
+        (token) => !tokens.some((storedToken) => storedToken.value === token)
+      );
+
+      const formatedPastedTokens = uniquePastedTokens.map((token) => ({
+        label: token.trim(),
+        value: token.trim(),
+      }));
+
+      setTokens((prevTokens) => [...prevTokens, ...formatedPastedTokens]);
+      setTokenInput("")
+    });
+  };
+
   return (
     <div className=" bg-slate-700 min-w-dvw min-h-[100vh] items-center flex flex-col justify-center">
       <h2>Token Input</h2>
@@ -86,6 +106,7 @@ function App() {
           ))}
 
           <input
+            onPaste={handlePasteTokens}
             onKeyDown={handleInputKeyDown}
             onChange={(e) => setTokenInput(e.target.value)}
             value={tokenInput}

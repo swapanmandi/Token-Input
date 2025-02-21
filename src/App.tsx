@@ -8,6 +8,7 @@ function App() {
 
   const [tokens, setTokens] = useState<Array<T>>([]);
   const [tokenInput, setTokenInput] = useState<string>("");
+  const [duplicateToken, setDuplicateToken] = useState<string>("");
 
   useEffect(() => {
     const storedTokens = localStorage.getItem("tokens");
@@ -26,7 +27,7 @@ function App() {
     if (
       e.key === "Enter" &&
       tokenInput.trim() != "" &&
-      tokens.filter((item) => item.value === tokenInput).length === 0
+      tokens.filter((item) => item.value === tokenInput.trim()).length === 0
     ) {
       setTokens((prevTokens) => [
         ...prevTokens,
@@ -35,6 +36,11 @@ function App() {
 
       setTokenInput("");
       return;
+    } else {
+      setDuplicateToken(tokenInput.trim());
+      setTimeout(() => {
+        setDuplicateToken("");
+      }, 1000);
     }
   };
 
@@ -52,7 +58,9 @@ function App() {
           {tokens.map((token, index) => (
             <p
               key={index}
-              className=" flexm-2 p-1 bg-blue-300 text-black rounded-sm"
+              className={` ${
+                duplicateToken === token.label && "bg-red-500"
+              } flexm-2 p-1 bg-blue-300 text-black rounded-sm`}
             >
               {token.value}
               <button

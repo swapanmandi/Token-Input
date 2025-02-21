@@ -31,7 +31,7 @@ function App() {
     ) {
       setTokens((prevTokens) => [
         ...prevTokens,
-        { label: tokenInput, value: tokenInput },
+        { label: tokenInput.trim(), value: tokenInput.trim() },
       ]);
 
       setTokenInput("");
@@ -110,6 +110,8 @@ function App() {
             onKeyDown={handleInputKeyDown}
             onChange={(e) => setTokenInput(e.target.value)}
             value={tokenInput}
+            maxLength={500}
+            minLength={2}
             className=" max-w-44 outline-0 bg-slate-400 p-1 px-2 h-fit text-black"
           ></input>
         </div>

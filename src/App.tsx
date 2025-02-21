@@ -19,9 +19,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (tokens.length > 0) {
-      localStorage.setItem("tokens", JSON.stringify(tokens));
-    }
+    localStorage.setItem("tokens", JSON.stringify(tokens));
   }, [tokens]);
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

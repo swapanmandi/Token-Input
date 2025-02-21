@@ -9,6 +9,7 @@ function App() {
   const [tokens, setTokens] = useState<Array<T>>([]);
   const [tokenInput, setTokenInput] = useState<string>("");
   const [duplicateToken, setDuplicateToken] = useState<string>("");
+  const [isCopied, setIsCopied] = useState<boolean>(false);
 
   useEffect(() => {
     const storedTokens = localStorage.getItem("tokens");
@@ -50,10 +51,20 @@ function App() {
     );
   };
 
+  const handleTokenCopy = () => {
+    navigator.clipboard.writeText(
+      tokens.map((token) => token.value).join(", ")
+    );
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1000);
+  };
+
   return (
     <div className=" bg-slate-700 min-w-dvw min-h-[100vh] items-center flex flex-col justify-center">
       <h2>Token Input</h2>
-      <div className=" bg-amber-600 min-w-[50vw] max-w-3xl min-h-[60vh]">
+      <div className=" flex flex-col justify-between bg-amber-600 min-w-[50vw] max-w-3xl min-h-[60vh]">
         <div className=" flex p-1 m- flex-wrap items-center space-x-2">
           {tokens.map((token, index) => (
             <p
@@ -79,6 +90,12 @@ function App() {
             className=" max-w-44 outline-0 bg-slate-400 p-1 px-2 h-fit text-black"
           ></input>
         </div>
+        <button
+          onClick={handleTokenCopy}
+          className=" bg-slate-400 place-self-end m-2 rounded-md p-1"
+        >
+          {isCopied ? "COPIED" : "COPY"}
+        </button>
       </div>
     </div>
   );

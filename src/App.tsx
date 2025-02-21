@@ -1,22 +1,40 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 function App() {
   interface T {
     label: string;
     value: string;
   }
 
-  const [tokens, setTokens] = useState<Array<T>>([{ label: "", value: "" }]);
+  const [tokens, setTokens] = useState<Array<T>>([]);
   const [tokenInput, setTokenInput] = useState<string>("");
 
+  useEffect(() => {
+    const storedTokens = localStorage.getItem("tokens");
+    if (storedTokens) {
+      setTokens(JSON.parse(storedTokens));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (tokens.length > 0) {
+      localStorage.setItem("tokens", JSON.stringify(tokens));
+    }
+  }, [tokens]);
+
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && tokenInput.trim() != "") {
+    if (
+      e.key === "Enter" &&
+      tokenInput.trim() != "" &&
+      tokens.filter((item) => item.value === tokenInput).length === 0
+    ) {
       setTokens((prevTokens) => [
         ...prevTokens,
         { label: tokenInput, value: tokenInput },
       ]);
-      setTokenInput(""); // to clear input field after adding token
-      return; // to avoid adding empty token when enter key is pressed
+
+      setTokenInput("");
+      return;
     }
   };
 

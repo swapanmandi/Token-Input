@@ -1,5 +1,10 @@
 import "./App.css";
 import { useEffect, useState } from "react";
+import x from "./assets/x.svg";
+import copy from "./assets/copy.svg";
+import check from "./assets/check.svg";
+import trash from "./assets/trash.svg";
+
 function App() {
   interface T {
     label: string;
@@ -32,7 +37,9 @@ function App() {
     if (
       e.key === "Enter" &&
       tokenInput.trim() != "" &&
-      tokens.filter((item) => item.value === tokenInput.trim()).length === 0
+      tokens.filter(
+        (item) => item.value.toLowerCase() === tokenInput.trim().toLowerCase()
+      ).length === 0
     ) {
       setTokens((prevTokens) => [
         ...prevTokens,
@@ -91,24 +98,26 @@ function App() {
 
   return (
     <div className=" bg-slate-700 min-w-dvw min-h-[100vh] items-center flex flex-col justify-center">
-      <h2 className=" font-bold text-2xl text-amber-600">Token Input</h2>
+      <h2 className=" text-2xl font-semibold text-amber-600 ">TOKEN INPUT</h2>
       <div className=" flex flex-col justify-between bg-amber-600 min-w-[50vw] max-w-3xl min-h-[60vh] rounded-md m-1">
         <div className=" flex p-2 flex-wrap items-center space-x-2">
           {tokens.map((token, index) => (
             <div
               key={index}
               className={` ${
-                duplicateToken === token.label && "bg-red-500"
+                duplicateToken.toLowerCase() === token.label.toLowerCase() &&
+                "bg-red-500"
               } h-8 flex items-center bg-blue-300 text-black rounded-md m-2 `}
             >
               <p className=" px-2">{token.value}</p>
               <button
                 onClick={() => handleRemoveToken(token.label)}
                 className={` ${
-                  duplicateToken === token.label && "bg-red-500"
-                } w-8 bg-blue-400 p-1 px-1 rounded-md`}
+                  duplicateToken.toLowerCase() === token.label.toLowerCase() &&
+                  "bg-red-500"
+                } w-8 bg-blue-400 p-1 px-1 rounded-md hover:bg-red-400 cursor-pointer`}
               >
-                X
+                <img src={x} />
               </button>
             </div>
           ))}
@@ -125,18 +134,18 @@ function App() {
             className=" max-w-44 outline-0 p-1 px-2 h-fit text-black"
           ></input>
         </div>
-        <div className=" flex place-self-end relative">
+        <div className=" flex place-self-end p-2">
           <button
             onClick={handleClearTokens}
-            className=" bg-slate-600  m-2 rounded-md p-1 text-black"
+            className=" bg-slate-600  m-2 rounded-md p-1 cursor-pointer"
           >
-            CLEAR
+            <img src={trash} />
           </button>
           <button
             onClick={handleTokenCopy}
-            className=" w-18 bg-slate-600  m-2 rounded-md p-1 text-black"
+            className=" bg-slate-600  m-2 rounded-md p-1 cursor-pointer"
           >
-            {isCopied ? "COPIED" : "COPY"}
+            <img src={isCopied ? check : copy} />
           </button>
         </div>
       </div>

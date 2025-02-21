@@ -20,20 +20,29 @@ function App() {
     }
   };
 
- 
+  const handleRemoveToken = (label: string) => {
+    setTokens((prevTokens) =>
+      prevTokens.filter((item) => item.label !== label)
+    );
+  };
 
   return (
     <div className=" bg-slate-700 min-w-dvw min-h-[100vh] items-center flex flex-col justify-center">
       <h2>Token Input</h2>
       <div className=" bg-amber-600 min-w-[50vw] max-w-3xl min-h-[60vh]">
-        <div className=" flex p-1 m- flex-wrap items-center">
+        <div className=" flex p-1 m- flex-wrap items-center space-x-2">
           {tokens.map((token, index) => (
             <p
               key={index}
-              className=" m-2 p-1 bg-blue-300 text-black rounded-sm"
+              className=" flexm-2 p-1 bg-blue-300 text-black rounded-sm"
             >
               {token.value}
-             
+              <button
+                onClick={() => handleRemoveToken(token.label)}
+                className=" bg-blue-400 mx-1 p-1"
+              >
+                X
+              </button>
             </p>
           ))}
 

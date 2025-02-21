@@ -19,7 +19,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("tokens", JSON.stringify(tokens));
+   if(tokens.length > 0) {
+    localStorage.setItem("tokens", JSON.stringify(tokens))};
   }, [tokens]);
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -63,24 +64,23 @@ function App() {
     setTokens([]);
   };
 
-  const handlePasteTokens = () => {
-    navigator.clipboard.readText().then((text) => {
-      const pastedTokens = text
-        .split(",")
-        .filter((token) => token.trim() != "");
-      console.log(pastedTokens);
-      const uniquePastedTokens = pastedTokens.filter(
-        (token) => !tokens.some((storedToken) => storedToken.value === token)
-      );
+  const handlePasteTokens = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const text = e.clipboardData.getData("text");
 
-      const formatedPastedTokens = uniquePastedTokens.map((token) => ({
-        label: token.trim(),
-        value: token.trim(),
-      }));
+    const pastedTokens = text.split(",").filter((token) => token.trim() != "");
+    console.log(pastedTokens);
+    const uniquePastedTokens = pastedTokens.filter(
+      (token) => !tokens.some((storedToken) => storedToken.value === token)
+    );
 
-      setTokens((prevTokens) => [...prevTokens, ...formatedPastedTokens]);
-      setTokenInput("")
-    });
+    const formatedPastedTokens = uniquePastedTokens.map((token) => ({
+      label: token.trim(),
+      value: token.trim(),
+    }));
+
+    setTokens((prevTokens) => [...prevTokens, ...formatedPastedTokens]);
+    setTokenInput("");
   };
 
   return (

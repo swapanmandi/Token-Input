@@ -59,6 +59,10 @@ function App() {
     }, 1000);
   };
 
+  const handleClearTokens = () => {
+    setTokens([]);
+  };
+
   return (
     <div className=" bg-slate-700 min-w-dvw min-h-[100vh] items-center flex flex-col justify-center">
       <h2>Token Input</h2>
@@ -88,12 +92,20 @@ function App() {
             className=" max-w-44 outline-0 bg-slate-400 p-1 px-2 h-fit text-black"
           ></input>
         </div>
-        <button
-          onClick={handleTokenCopy}
-          className=" bg-slate-400 place-self-end m-2 rounded-md p-1"
-        >
-          {isCopied ? "COPIED" : "COPY"}
-        </button>
+        <div className=" flex place-self-end">
+          <button
+            onClick={handleClearTokens}
+            className=" bg-slate-400  m-2 rounded-md p-1"
+          >
+            CLEAR
+          </button>
+          <button
+            onClick={handleTokenCopy}
+            className=" bg-slate-400  m-2 rounded-md p-1"
+          >
+            {isCopied ? "COPIED" : "COPY"}
+          </button>
+        </div>
       </div>
     </div>
   );

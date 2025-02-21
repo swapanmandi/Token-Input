@@ -19,8 +19,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-   if(tokens.length > 0) {
-    localStorage.setItem("tokens", JSON.stringify(tokens))};
+    document.getElementById("token-input")?.focus();
+  }, []);
+
+  useEffect(() => {
+    if (tokens.length > 0) {
+      localStorage.setItem("tokens", JSON.stringify(tokens));
+    }
   }, [tokens]);
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -62,6 +67,7 @@ function App() {
 
   const handleClearTokens = () => {
     setTokens([]);
+    localStorage.clear();
   };
 
   const handlePasteTokens = (e: React.ClipboardEvent<HTMLInputElement>) => {
@@ -85,46 +91,50 @@ function App() {
 
   return (
     <div className=" bg-slate-700 min-w-dvw min-h-[100vh] items-center flex flex-col justify-center">
-      <h2>Token Input</h2>
-      <div className=" flex flex-col justify-between bg-amber-600 min-w-[50vw] max-w-3xl min-h-[60vh]">
-        <div className=" flex p-1 m- flex-wrap items-center space-x-2">
+      <h2 className=" font-bold text-2xl text-amber-600">Token Input</h2>
+      <div className=" flex flex-col justify-between bg-amber-600 min-w-[50vw] max-w-3xl min-h-[60vh] rounded-md m-1">
+        <div className=" flex p-2 flex-wrap items-center space-x-2">
           {tokens.map((token, index) => (
-            <p
+            <div
               key={index}
               className={` ${
                 duplicateToken === token.label && "bg-red-500"
-              } flexm-2 p-1 bg-blue-300 text-black rounded-sm`}
+              } h-8 flex items-center bg-blue-300 text-black rounded-md m-2 `}
             >
-              {token.value}
+              <p className=" px-2">{token.value}</p>
               <button
                 onClick={() => handleRemoveToken(token.label)}
-                className=" bg-blue-400 mx-1 p-1"
+                className={` ${
+                  duplicateToken === token.label && "bg-red-500"
+                } w-8 bg-blue-400 p-1 px-1 rounded-md`}
               >
                 X
               </button>
-            </p>
+            </div>
           ))}
 
           <input
+            id="token-input"
+            placeholder="Enter Token"
             onPaste={handlePasteTokens}
             onKeyDown={handleInputKeyDown}
             onChange={(e) => setTokenInput(e.target.value)}
             value={tokenInput}
             maxLength={500}
             minLength={2}
-            className=" max-w-44 outline-0 bg-slate-400 p-1 px-2 h-fit text-black"
+            className=" max-w-44 outline-0 p-1 px-2 h-fit text-black"
           ></input>
         </div>
-        <div className=" flex place-self-end">
+        <div className=" flex place-self-end relative">
           <button
             onClick={handleClearTokens}
-            className=" bg-slate-400  m-2 rounded-md p-1"
+            className=" bg-slate-600  m-2 rounded-md p-1 text-black"
           >
             CLEAR
           </button>
           <button
             onClick={handleTokenCopy}
-            className=" bg-slate-400  m-2 rounded-md p-1"
+            className=" w-18 bg-slate-600  m-2 rounded-md p-1 text-black"
           >
             {isCopied ? "COPIED" : "COPY"}
           </button>

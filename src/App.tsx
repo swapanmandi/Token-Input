@@ -69,7 +69,7 @@ function App() {
     setIsCopied(true);
     setTimeout(() => {
       setIsCopied(false);
-    }, 1000);
+    }, 5000);
   };
 
   const handleClearTokens = () => {
@@ -84,8 +84,9 @@ function App() {
     const pastedTokens = text.split(",").filter((token) => token.trim() != "");
     console.log(pastedTokens);
     const uniquePastedTokens = pastedTokens.filter(
-      (token) => !tokens.some((storedToken) => storedToken.value === token)
+      (token) => !tokens.some((storedToken) => storedToken.value.toLowerCase() === token.toLowerCase())
     );
+    
 
     const formatedPastedTokens = uniquePastedTokens.map((token) => ({
       label: token.trim(),
